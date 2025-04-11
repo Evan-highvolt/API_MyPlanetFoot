@@ -4,28 +4,28 @@ import com.MyPlanetFootball.API_MyPlanetFootball.model.FanModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.FanService;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.util.Optional;
+
+@Slf4j
 @RestController
-@Getter
-@Setter
 public class FanController {
 
     @Autowired
     private FanService fanService;
 
-    @GetMapping("/")
-    public String Hello() {
-        return "Hello World";
-    }
 
     @PostMapping("/fan")
-    public FanModel createFan(@RequestBody FanModel fan) {
-        return fanService.saveFan(fan);
+    public ResponseEntity<FanModel> createFan(@RequestBody FanModel fan) throws URISyntaxException {
+        FanModel savedFan = fanService.saveFan(fan);
+        return ResponseEntity.created(new URI("/fans" + savedFan.getIdFan())).body(savedFan);
     }
 
     @GetMapping("/fans")
@@ -33,6 +33,49 @@ public class FanController {
         return fanService.getAllFans();
     }
 
+    @PutMapping("/fan/{id}")
+    public ResponseEntity<FanModel> updateFan(@PathVariable Integer id, @RequestBody FanModel fanModel) {
+        Optional<FanModel> fanModelOptional = fanService.getFanById(id);
+        if (fanModelOptional.isPresent()) {
+            FanModel fanModelToUpdate = fanModelOptional.get();
+
+            String nomFan = fanModel.getNomFan();
+            if (nomFan != null) {
+                fanModelToUpdate.setNomFan(nomFan);
+            }
+
+            String prenomFan = fanModel.getPrenomFan();
+            if (prenomFan != null) {
+                fanModelToUpdate.setPrenomFan(prenomFan);
+            }
+
+            String emailFan = fanModel.getEmailFan();
+            if (emailFan != null) {
+                fanModelToUpdate.setEmailFan(emailFan);
+            }
+
+            String telephoneFan = fanModel.getTelephoneFan();
+            if (telephoneFan != null) {
+                fanModelToUpdate.setTelephoneFan(telephoneFan);
+            }
+
+            String photoFan = fanModel.getPhotoFan();
+            if (photoFan != null) {
+                fanModelToUpdate.setPhotoFan(photoFan);
+            }
+
+            LocalDate dateFan = fanModel.getDateFan();
+            if (dateFan != null) {
+                fanModelToUpdate.setDateFan(dateFan);
+            }
 
 
+            fanService.saveFan(fanModelToUpdate);
+            return ResponseEntity.ok(fanModelToUpdate);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
 }
+

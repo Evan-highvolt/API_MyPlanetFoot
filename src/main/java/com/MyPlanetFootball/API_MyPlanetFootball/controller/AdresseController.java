@@ -14,8 +14,6 @@ import java.util.Optional;
  * The type Adresse controller.
  */
 @RestController
-@Getter
-@Setter
 public class AdresseController {
     @Autowired
     private AdresseService adresseService;
@@ -42,6 +40,10 @@ public class AdresseController {
         return adresseModel.orElse(null);
     }
 
+    public ResponseEntity<AdresseModel> createAdresse(@RequestBody AdresseModel adresseModel){
+        return ResponseEntity.ok(adresseService.createAdresse(adresseModel));
+    }
+
     /**
      * Update adresse response entity .
      *
@@ -50,7 +52,7 @@ public class AdresseController {
      * @return the response entity
      */
     @PutMapping("/adresse/{id}")
-    public ResponseEntity<Object>updateAdresse(@PathVariable Integer id, @RequestBody AdresseModel adresseModel){
+    public ResponseEntity<AdresseModel>updateAdresse(@PathVariable Integer id, @RequestBody AdresseModel adresseModel){
         Optional<AdresseModel> adresseModelOptional = adresseService.getAdresseById(id);
         if(adresseModelOptional.isPresent()){
             AdresseModel adresseUpdate = adresseModelOptional.get();
