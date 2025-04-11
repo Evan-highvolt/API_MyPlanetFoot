@@ -2,6 +2,7 @@ package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -18,7 +19,7 @@ public class PayModel {
     @Column(name = "id_pay")
     private Integer id;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "nom_pay")
     private String nomPay;
 }

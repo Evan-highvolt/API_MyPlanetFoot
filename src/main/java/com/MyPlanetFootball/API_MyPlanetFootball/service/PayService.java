@@ -23,7 +23,12 @@ public class PayService {
      * @return the iterable
      */
     public Iterable<PayModel>getAllPay(){
-        return pay.findAll();
+        try {
+            return pay.findAll();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException("Erreur lors de la recherche des adresses");
+        }
     }
 
     /**
@@ -33,7 +38,12 @@ public class PayService {
      * @return the pay model
      */
     public PayModel createPay(PayModel payModel){
-        return pay.save(payModel);
+        try {
+            return pay.save(payModel);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException("Erreur lors de la creation de la pay");
+        }
     }
 
     /**
@@ -43,16 +53,29 @@ public class PayService {
      * @return the optional
      */
     public Optional<PayModel> getPayById(Integer id){
-        return pay.findById(id);
+        try {
+            return pay.findById(id);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new RuntimeException("Erreur lors de la recherche d'un pay");
+        }
     }
 
     /**
      * Delete pay by id.
      *
      * @param id the id
+     * @return
      */
     public void deletePayById(Integer id){
-        pay.deleteById(id);
+        try {
+            log.warn("Suppresion du pay avec l'id : {}", id);
+            pay.deleteById(id);
+        } catch (Exception e) {
+            log.error("Problem lors de la suppression de", id);
+            throw new RuntimeException("Impossible de supprimer la pay avec l'id : " + id);
+        }
+
     }
 
 }

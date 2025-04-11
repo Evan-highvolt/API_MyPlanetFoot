@@ -1,6 +1,7 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ public class RegionModel {
     @Column(name = "id_reg")
     private Integer idReg;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "nom_reg")
     private String nomReg;
 

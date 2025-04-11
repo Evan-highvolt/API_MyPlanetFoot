@@ -1,6 +1,7 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 
@@ -17,15 +18,15 @@ public class AdresseModel {
     @Column(name = "id_adr")
     private Integer id;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "numero_adr")
     private int numeroAdr;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "rue_adr")
     private String rueAdr;
 
-    @NotEmpty
+    @NotBlank
     @Column(name = "cp_adr")
     private String codePostaleAdr;
 

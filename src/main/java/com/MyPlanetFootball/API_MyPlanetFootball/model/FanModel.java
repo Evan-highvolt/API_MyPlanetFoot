@@ -2,6 +2,7 @@ package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Past;
 import lombok.Data;
 
 
@@ -45,6 +46,7 @@ public class FanModel{
     private String photoFan;
 
     @NotEmpty
+    @Past(message = "La date de naissance doit être dans le passé.")
     @Column(name = "date_fan")
     private LocalDate dateFan;
 

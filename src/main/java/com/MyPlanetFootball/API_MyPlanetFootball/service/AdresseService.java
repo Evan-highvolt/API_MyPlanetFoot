@@ -60,8 +60,13 @@ public class AdresseService {
      * @return the adresse model
      */
     public AdresseModel createAdresse(AdresseModel adresse){
-        log.info("Création d'une nouvelle adresse : {}", adresse);
-        return adresseRepo.save(adresse);
+        try {
+            log.info("Création d'une nouvelle adresse : {}", adresse);
+            return adresseRepo.save(adresse);
+        } catch(Exception e) {
+            log.error("Erreur lors de la creation de l'adresse");
+            throw new RuntimeException("Impossible de creer l'adresse.");
+        }
     }
 
 
@@ -71,7 +76,13 @@ public class AdresseService {
      * @param id the id
      */
     public void deleteAdresse(Integer id){
-        log.warn("Suppression de l'adresse avec l'id : {}", id);
-        adresseRepo.deleteById(id);
+        try {
+            log.warn("Suppression de l'adresse avec l'id : {}", id);
+            adresseRepo.deleteById(id);
+        } catch(Exception e) {
+            log.error("Erreur lors de l'adresse avec l'id {} : {}", id, e.getMessage());
+            throw new RuntimeException("Impossible de supprimer l'adresse.");
+        }
+
     }
 }
