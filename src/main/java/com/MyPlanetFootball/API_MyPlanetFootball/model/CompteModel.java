@@ -7,6 +7,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "compte")
 public class CompteModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,19 +16,18 @@ public class CompteModel {
     private Integer idCpt;
 
     @NotBlank
-    @Column(name = "mdp_cpt")
+    @Column(name = "mdp_cpt", nullable = false, length = 255)
     private String mdpCpt;
 
     @NotBlank
-    @Column(name = "login_cpt")
+    @Column(name = "login_cpt", nullable = false, unique = true)
     private String loginCpt;
 
-    @NotNull
-    @Column(name = "est_inscrit_cpt")
+    @Column(name = "est_inscrit_cpt", nullable = false)
     private Boolean estInscritCpt;
 
     @NotBlank
-    @Column(name = "role_cpt")
+    @Column(name = "role_cpt", nullable = false)
     private String roleCpt;
 
 

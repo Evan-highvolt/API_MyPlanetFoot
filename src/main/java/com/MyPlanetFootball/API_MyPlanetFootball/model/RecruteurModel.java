@@ -8,7 +8,20 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(name = "recruteur")
 public class RecruteurModel {
+    @ManyToOne
+    @JoinColumn(name = "id_clb", nullable = false)
+    private ClubModel clubModel;
+
+    @ManyToOne
+    @JoinColumn(name = "id_adr", nullable = false)
+    private AdresseModel adresseModel;
+
+    @ManyToOne
+    @JoinColumn(name = "id_cpt", nullable = false)
+    private CompteModel compteModel;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

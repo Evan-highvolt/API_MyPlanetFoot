@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Data
+@Table(name = "admin")
 public class AdminModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,29 +16,29 @@ public class AdminModel {
     @Column(name = "id_adm")
     private Integer idAdm;
 
-    @Column(name = "prenom_adm")
-    @NotBlank
+
+    @Column(name = "prenom_adm", nullable = false, length = 50)
+    @NotBlank(message = "Le prenom ne doit pas être vide.")
     private String prenomAdm;
 
-    @Column(name = "nom_adm")
-    @NotBlank
+    @Column(name = "nom_adm", nullable = false, length = 50)
+    @NotBlank(message = "Le nom ne doit pas être vide.")
     private String nomAdm;
 
-    @Column(name = "email_adm")
-    @Email
-    @NotBlank
+    @Column(name = "email_adm", nullable = false, length = 255)
+    @Email(message = "Le format de l'email est invalide.")
+    @NotBlank(message = "Le mail ne doit pas être vide.")
     private String emailAdm;
 
-    @Column(name = "telephone_adm")
-    @NotBlank
+    @Column(name = "telephone_adm", nullable = false, length = 20)
+    @NotBlank(message = "Le telephone ne doit pas être vide")
     private String telephoneAdm;
 
     @Column(name = "photo_prfl_adm")
-    @NotBlank
     private String photoPrflAdm;
 
-    @Column(name = "date_adm")
-    @NotNull
+    @Column(name = "date_adm", nullable = false)
+    @NotNull(message = "La date ne doit pas être vide.")
     @Past(message = "La date de naissance doit être dans le passé.")
     private LocalDate dateAdm;
 

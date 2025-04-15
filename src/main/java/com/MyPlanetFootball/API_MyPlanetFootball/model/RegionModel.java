@@ -10,6 +10,10 @@ import lombok.Data;
 
 @Table(name = "region")
 public class RegionModel {
+    @ManyToOne
+    @JoinColumn(name = "id_pay")
+    private PayModel payModel;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -17,7 +21,7 @@ public class RegionModel {
     private Integer idReg;
 
     @NotBlank
-    @Column(name = "nom_reg")
+    @Column(name = "nom_reg", nullable = false)
     private String nomReg;
 
 

@@ -2,8 +2,7 @@ package com.MyPlanetFootball.API_MyPlanetFootball.controller;
 
 import com.MyPlanetFootball.API_MyPlanetFootball.model.AdresseModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.AdresseService;
-import lombok.Getter;
-import lombok.Setter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +13,11 @@ import java.util.Optional;
  * The type Adresse controller.
  */
 @RestController
+@RequestMapping("/adresse")
 public class AdresseController {
     @Autowired
     private AdresseService adresseService;
+
 
     /**
      * Get all adresses iterable.
@@ -34,7 +35,7 @@ public class AdresseController {
      * @param id the id
      * @return the adresse model
      */
-    @GetMapping("/adresse/{id}")
+    @GetMapping("/{id}")
     public AdresseModel getAdresse(@PathVariable Integer id){
         Optional<AdresseModel> adresseModel = adresseService.getAdresseById(id);
         return adresseModel.orElse(null);

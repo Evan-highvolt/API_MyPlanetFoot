@@ -4,14 +4,33 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a publication entity in the system.
+ * This class is mapped to the "publication" table in the database.
+ * It contains information about a publication, including associated user account,
+ * content details, and metadata such as like count and comment count.
+ * The publication also tracks the creation date.
+ *
+ * Constraints and validation rules:
+ * - The like count and comment count must be non-negative.
+ * - The content cannot be blank and has a maximum length of 1500 characters.
+ * - The publication date cannot be null and defaults to the current date.
+ *
+ * Relationships:
+ * - It is associated with a user account through a many-to-one relationship with the {@link CompteModel}.
+ */
 @Data
 @Entity
+@Table(name = "publication")
 public class PublicationModel {
+    @ManyToOne
+    @JoinColumn(name = "id_cpt", nullable = false)
+    private CompteModel compteModel;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -24,7 +43,7 @@ public class PublicationModel {
     private int nbrLikePub;
 
     @NotBlank(message = "Le contenu ne peut pas être vide.")
-    @Column(name = "contenu_pub")
+    @Column(name = "contenu_pub", nullable = false, length = 1500)
     private String contenuPub;
 
     @NotNull
@@ -32,7 +51,7 @@ public class PublicationModel {
     @Column(name = "nbr_commentaire_pub")
     private int nbrCommentairePub;
 
-    @Column(name = "date_pub")
+    @Column(name = "date_pub", nullable = false)
     private LocalDate datePub = LocalDate.now();
 
 }

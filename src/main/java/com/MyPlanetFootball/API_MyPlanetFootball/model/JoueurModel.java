@@ -13,6 +13,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Data
+@Table(name = "joueur")
 public class JoueurModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

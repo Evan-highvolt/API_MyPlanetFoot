@@ -8,6 +8,7 @@ import lombok.Data;
 
 @Entity
 @Data
+@Table(name = "carte_joueur")
 public class CarteModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

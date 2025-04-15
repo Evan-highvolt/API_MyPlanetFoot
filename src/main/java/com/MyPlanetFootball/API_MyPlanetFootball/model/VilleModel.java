@@ -10,6 +10,10 @@ import lombok.Data;
 
 @Table(name = "ville")
 public class VilleModel {
+    @ManyToOne
+    @JoinColumn(name = "id_reg")
+    private RegionModel regionModel;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -17,6 +21,6 @@ public class VilleModel {
     private Integer idVille;
 
     @NotBlank
-    @Column(name = "nom_vil")
+    @Column(name = "nom_vil", nullable = false)
     private String nomVil;
 }

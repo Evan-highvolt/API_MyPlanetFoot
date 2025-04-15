@@ -16,13 +16,14 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@RequestMapping("fan")
 public class FanController {
 
     @Autowired
     private FanService fanService;
 
 
-    @PostMapping("/fan")
+    @PostMapping("/")
     public ResponseEntity<FanModel> createFan(@RequestBody FanModel fan) throws URISyntaxException {
         FanModel savedFan = fanService.saveFan(fan);
         return ResponseEntity.created(new URI("/fans" + savedFan.getIdFan())).body(savedFan);
@@ -33,7 +34,7 @@ public class FanController {
         return fanService.getAllFans();
     }
 
-    @PutMapping("/fan/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<FanModel> updateFan(@PathVariable Integer id, @RequestBody FanModel fanModel) {
         Optional<FanModel> fanModelOptional = fanService.getFanById(id);
         if (fanModelOptional.isPresent()) {

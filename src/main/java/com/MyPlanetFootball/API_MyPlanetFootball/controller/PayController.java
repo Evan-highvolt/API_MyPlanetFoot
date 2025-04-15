@@ -14,8 +14,6 @@ import java.util.Optional;
  * The type Pay controller.
  */
 @RestController
-@Getter
-@Setter
 public class PayController {
     @Autowired
     private PayService payService;

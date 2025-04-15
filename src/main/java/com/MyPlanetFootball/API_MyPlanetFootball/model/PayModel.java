@@ -16,7 +16,7 @@ public class PayModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Column(name = "id_pay")
+    @Column(name = "id_pay", nullable = false)
     private Integer id;
 
     @NotBlank
