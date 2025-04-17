@@ -10,6 +10,10 @@ import java.time.LocalDate;
 @Data
 @Table(name = "admin")
 public class AdminModel {
+    @ManyToOne
+    @JoinColumn(name = "id_cpt", nullable = false)
+    private CompteModel compteModel;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
