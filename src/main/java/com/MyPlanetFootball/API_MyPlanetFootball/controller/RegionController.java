@@ -32,7 +32,7 @@ public class RegionController {
         try {
             return regionService.getAllRegions();
         } catch (Exception e) {
-            log.error("Erreur lors de la recherche d'une région : {}", e.getMessage(), e);
+            log.error("Erreur lors de la recherche d'une région : {}", e.getMessage());
             throw new RuntimeException("Impossible d'afficher les regions");
         }
     }
@@ -79,7 +79,7 @@ public class RegionController {
             return ResponseEntity.ok(regionUpdated);
         } catch (RuntimeException rte) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(rte.getMessage());
+                    .body("Erreur lors de la modification de l'id : " + id + rte.getMessage());
         }
     }
 

@@ -54,7 +54,7 @@ public class RegionService {
 
             return regionRepo.save(regionModel);
         }  catch (Exception e) {
-            log.error("Erreur lors de la mise à jour de la région avec l'id : " + id, e);
+            log.error("Erreur lors de la mise à jour de la région avec l'id : {}", id, e);
             throw new RuntimeException("Impossible de mettre à jour la région avec l'id : " + id);
         }
     }
