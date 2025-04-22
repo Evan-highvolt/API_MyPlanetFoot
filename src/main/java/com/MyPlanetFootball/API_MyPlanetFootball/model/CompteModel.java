@@ -2,7 +2,6 @@ package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
@@ -23,9 +22,6 @@ public class CompteModel {
     @Column(name = "login_cpt", nullable = false, unique = true)
     private String loginCpt;
 
-    @Column(name = "est_inscrit_cpt", nullable = false)
-    private Boolean estInscritCpt;
-
     @NotBlank
     @Column(name = "role_cpt", nullable = false)
     private String roleCpt;
@@ -36,7 +32,6 @@ public class CompteModel {
         return "CompteModel{" +
                 "idCpt=" + idCpt +
                 ", loginCpt='" + loginCpt + '\'' +
-                ", estInscritCpt=" + estInscritCpt +
                 ", roleCpt='" + roleCpt + '\'' +
                 '}';
     }
