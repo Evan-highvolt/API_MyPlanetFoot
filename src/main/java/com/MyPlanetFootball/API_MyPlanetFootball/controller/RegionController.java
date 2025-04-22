@@ -60,7 +60,7 @@ public class RegionController {
      * @param region the region
      * @return the response entity
      */
-    @PostMapping("/addregion")
+    @PostMapping("/")
     public ResponseEntity<String> createRegion(@RequestBody @Valid RegionModel region){
         try {
             regionService.createRegion(region);
@@ -72,7 +72,7 @@ public class RegionController {
         }
     }
 
-    @PutMapping("/updateregion/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<?> updateRegion(@PathVariable @Valid Integer id, @RequestBody RegionModel region){
         try {
             RegionModel regionUpdated = regionService.updateRegion(id, region);
@@ -89,7 +89,7 @@ public class RegionController {
      * @param id the id
      * @return the response entity
      */
-    @DeleteMapping("/deleteregion/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<String> deleteRegion(@PathVariable @Valid Integer id) {
         try {
             regionService.deleteRegionById(id);

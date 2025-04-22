@@ -9,12 +9,20 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * The type Region service.
+ */
 @Service
 @Slf4j
 public class RegionService {
     @Autowired
     private RegionRepo regionRepo;
 
+    /**
+     * Get all regions iterable.
+     *
+     * @return the iterable
+     */
     public Iterable<RegionModel>getAllRegions() {
         try {
             return regionRepo.findAll();
@@ -25,6 +33,12 @@ public class RegionService {
 
     }
 
+    /**
+     * Get region by id optional.
+     *
+     * @param id the id
+     * @return the optional
+     */
     public Optional<RegionModel> getRegionById(Integer id){
         try {
             return regionRepo.findById(id);
@@ -34,6 +48,12 @@ public class RegionService {
         }
     }
 
+    /**
+     * Create region region model.
+     *
+     * @param regionModel the region model
+     * @return the region model
+     */
     public RegionModel createRegion(RegionModel regionModel) {
         try {
             return regionRepo.save(regionModel);
@@ -43,6 +63,13 @@ public class RegionService {
         }
     }
 
+    /**
+     * Update region region model.
+     *
+     * @param id            the id
+     * @param updatedRegion the updated region
+     * @return the region model
+     */
     public RegionModel updateRegion(Integer id, RegionModel updatedRegion) {
         try {
             RegionModel regionModel = regionRepo.findById(id)
@@ -60,6 +87,11 @@ public class RegionService {
     }
 
 
+    /**
+     * Delete region by id.
+     *
+     * @param id the id
+     */
     public void deleteRegionById(Integer id) {
         if (!regionRepo.existsById(id)) {
             throw  new RuntimeException("Impossible de supprimer : région introuvable avec l'id : " + id);
