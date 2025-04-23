@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ * The type Admin controller.
+ */
 @RestController
 @Slf4j
 @RequestMapping("/admin")
@@ -18,16 +21,28 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * Gets all admins.
+     *
+     * @return the all admins
+     */
     @GetMapping()
-    public Iterable<AdminModel> getAllAdmins() {
+    public ResponseEntity<?> getAllAdmins() {
         try {
-            return adminService.getAllAdmins();
+            Iterable<AdminModel> villes = adminService.getAllAdmins();
+            return ResponseEntity.ok(villes);
         } catch (Exception e) {
             log.error("Erreur lors de la recherche des admins : {}", e.getMessage());
             throw new RuntimeException("Impossible d'afficher les admins");
         }
     }
 
+    /**
+     * Find admin by id response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> findAdminById(@PathVariable Integer id) {
         try {
@@ -44,6 +59,51 @@ public class AdminController {
         }
     }
 
+    /**
+     * Create admin response entity.
+     *
+     * @param adminModel the admin model
+     * @return the response entity
+     */
+    @PostMapping()
+    public ResponseEntity<?> createAdmin(@RequestBody @Valid AdminModel adminModel) {
+        try {
+            AdminModel newAdmin = adminService.createAdmin(adminModel);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Admin créée avec succès : " + newAdmin.getEmailAdm());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur lors de la creation d'admin : " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Update admin response entity.
+     *
+     * @param admin the admin
+     * @param email the email
+     * @return the response entity
+     */
+    @PutMapping("/{email}")
+    public ResponseEntity<?>updateAdmin(@RequestBody @Valid AdminModel admin, @PathVariable String email) {
+        try {
+            AdminModel updatedAdmin = adminService.updateAdmin(email, admin);
+            return ResponseEntity.ok(updatedAdmin);
+        } catch (Exception e) {
+            log.error("Erreur lors de la modification d'admin : {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Erreur lors de la modification d'admin : " + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Delete admin response entity.
+     *
+     * @param id the id
+     * @return the response entity
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteAdmin(@PathVariable @Valid Integer id) {
         try {

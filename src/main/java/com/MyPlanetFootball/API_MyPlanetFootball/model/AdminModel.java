@@ -6,13 +6,20 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * The type Admin model.
+ */
 @Entity
 @Data
 @Table(name = "admin")
 public class AdminModel {
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_cpt", nullable = false)
     private CompteModel compteModel;
+
+//    @ManyToOne
+//    @JoinColumn(name = "id_adr", nullable = false)
+//    private AdresseModel adresseModel;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +47,9 @@ public class AdminModel {
 
     @Column(name = "photo_prfl_adm")
     private String photoPrflAdm;
+
+    @Column(name = "respo_adm")
+    private String respoAdm;
 
     @Column(name = "date_adm", nullable = false)
     @NotNull(message = "La date ne doit pas être vide.")

@@ -3,7 +3,9 @@ package com.MyPlanetFootball.API_MyPlanetFootball.controller;
 import com.MyPlanetFootball.API_MyPlanetFootball.model.AdresseModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.AdresseService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 /**
  * The type Adresse controller.
  */
+@Slf4j
 @RestController
 @RequestMapping("/adresse")
 public class AdresseController {
@@ -25,8 +28,15 @@ public class AdresseController {
      * @return the iterable
      */
     @GetMapping("/adresses")
-    public Iterable<AdresseModel> getAllAdresses(){
-        return adresseService.getAllAdresse();
+    public ResponseEntity<?> getAllAdresses(){
+        try {
+            Iterable<AdresseModel> adresses = adresseService.getAllAdresse();
+            return ResponseEntity.ok(adresses);
+        } catch (Exception e) {
+            log.error("Erreur lors de la recherche des adresses : {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Impossible d'afficher les adresses" + e.getMessage());
+        }
     }
 
     /**
@@ -36,9 +46,15 @@ public class AdresseController {
      * @return the adresse model
      */
     @GetMapping("/{id}")
-    public AdresseModel getAdresse(@PathVariable Integer id){
-        Optional<AdresseModel> adresseModel = adresseService.getAdresseById(id);
-        return adresseModel.orElse(null);
+    public ResponseEntity<?> getAdresse(@PathVariable Integer id){
+            Optional<AdresseModel> adresse = adresseService.getAdresseById(id);
+            if (adresse.isPresent()) {
+                return ResponseEntity.ok().body(adresse.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Impossible d'afficher l'adresse " + id);
+            }
+
     }
 
     public ResponseEntity<AdresseModel> createAdresse(@RequestBody AdresseModel adresseModel){

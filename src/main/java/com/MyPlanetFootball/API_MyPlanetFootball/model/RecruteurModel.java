@@ -1,5 +1,6 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class RecruteurModel {
     private String nomRec;
 
     @Column(name = "email_rec")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Email(message = "Le format de l'email est invalide.")
     @NotBlank
     private String emailRec;
