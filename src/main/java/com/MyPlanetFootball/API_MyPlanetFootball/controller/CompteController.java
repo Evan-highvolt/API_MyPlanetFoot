@@ -27,9 +27,10 @@ public class CompteController {
      * @return the iterable
      */
     @GetMapping()
-    public Iterable<CompteModel> GetAllComptes() {
+    public ResponseEntity<?> GetAllComptes() {
         try {
-            return compteService.GetAllComptes();
+            Iterable<CompteModel> comptes = compteService.GetAllComptes();
+            return ResponseEntity.ok(comptes);
         } catch (Exception e) {
             log.error("Erreur lors de la recherche des comptes : {}", e.getMessage());
             throw new RuntimeException("Impossible d'afficher les villes", e);

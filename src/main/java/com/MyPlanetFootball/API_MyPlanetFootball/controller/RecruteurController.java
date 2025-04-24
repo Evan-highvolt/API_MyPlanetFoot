@@ -19,16 +19,18 @@ public class RecruteurController {
     private RecruteurService recruteurService;
 
     @GetMapping()
-    public Iterable<RecruteurModel> getRecruteurs() {
+    public ResponseEntity<?> getRecruteurs() {
         try {
-            return recruteurService.getAllRecruteurs();
+            Iterable<RecruteurModel> recList = recruteurService.getAllRecruteurs();
+            return ResponseEntity.ok().body(recList);
         } catch (Exception e) {
             log.error("Erreur lors de la recherche des recruteurs : {}", e.getMessage());
-            throw new RuntimeException("Impossible d'afficher les recruteura.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erreur lors de la recherche des recruteurs : {}");
         }
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getRecruteurById(@PathVariable Integer id) {
         try {
             Optional<RecruteurModel> recruteurId = recruteurService.GetRecruteurById(id);
@@ -40,7 +42,8 @@ public class RecruteurController {
             }
         } catch (Exception e) {
             log.error("Erreur lors de la récupération du recruteur avec l'id {}{}:", id, e.getMessage());
-            throw new RuntimeException("Erreur lors de la récupération du recruteur." + id);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Erreur lors de la recherche de recruteur avec l'id : " + id);
         }
     }
 
@@ -55,6 +58,19 @@ public class RecruteurController {
                     .body("Erreur lors de la creation du recruteur : " + e.getMessage());
         }
     }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<?> updateRecruteur(@PathVariable String email, @RequestBody @Valid RecruteurModel recruteurModel) {
+        try {
+            RecruteurModel updatedRec = recruteurService.updateRecruteur(recruteurModel, email);
+            return ResponseEntity.ok(updatedRec);
+        } catch (Exception e) {
+            log.error("Erreur lors de la modification du recruteur : {} {}",email, e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Erreur lors de la modification d'admin : "+ email + e.getMessage());
+        }
+    }
+
 
 
     @DeleteMapping("/{id}")

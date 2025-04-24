@@ -15,6 +15,20 @@ import java.time.LocalDate;
 @Data
 @Table(name = "joueur")
 public class JoueurModel {
+
+    @ManyToOne
+    @JoinColumn(name = "id_cpt", nullable = false)
+    private CompteModel compteModel;
+
+
+    @ManyToOne
+    @JoinColumn(name = "id_adr", nullable = false)
+    private AdresseModel adresseModel;
+
+    @ManyToOne
+    @JoinColumn(name = "id_clb", nullable = false)
+    private ClubModel clubModel;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

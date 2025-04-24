@@ -28,9 +28,10 @@ public class RegionController {
      * @return the all regions
      */
     @GetMapping("/regions")
-    public Iterable<RegionModel> getAllRegions() {
+    public ResponseEntity<?> getAllRegions() {
         try {
-            return regionService.getAllRegions();
+            Iterable<RegionModel> regions = regionService.getAllRegions();
+            return ResponseEntity.ok(regions);
         } catch (Exception e) {
             log.error("Erreur lors de la recherche d'une région : {}", e.getMessage());
             throw new RuntimeException("Impossible d'afficher les regions");

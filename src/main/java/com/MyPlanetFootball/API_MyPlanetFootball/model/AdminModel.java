@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * The type Admin model.
+ */
 @Entity
 @Data
 @Table(name = "admin")

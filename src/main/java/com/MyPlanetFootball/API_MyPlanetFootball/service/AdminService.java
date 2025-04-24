@@ -33,7 +33,7 @@ public class AdminService {
             return adminRepo.findAll();
         } catch (Exception e) {
             log.error("Erreur lors de la récupération des Admin : {}", e.getMessage());
-            throw new RuntimeException("Impossible de supprimer les admins");
+            throw new RuntimeException("Impossible de récupérer les admins");
         }
     }
 
@@ -53,7 +53,7 @@ public class AdminService {
     }
 
     /**
-     * Create admin admin model.
+     * Create admin model.
      *
      * @param adminModel the admin model
      * @return the admin model

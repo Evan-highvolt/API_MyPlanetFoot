@@ -57,6 +57,36 @@ public class RecruteurService {
         }
     }
 
+    public RecruteurModel updateRecruteur(RecruteurModel recruteurModel, String email) {
+        try {
+            RecruteurModel updatedRecruteur = recruteurRepo.emailRec(email)
+                    .orElseThrow(() -> new RuntimeException("Recruteur inexistant avec l'email : " + email));
+
+                if (recruteurModel.getPrenomRec() != null && !recruteurModel.getPrenomRec().isBlank()) {
+                    updatedRecruteur.setPrenomRec(recruteurModel.getPrenomRec());
+                }
+
+                if (recruteurModel.getNomRec() != null && !recruteurModel.getNomRec().isBlank()) {
+                    updatedRecruteur.setNomRec(recruteurModel.getNomRec());
+                }
+
+                if (recruteurModel.getTelephoneRec() != null && !recruteurModel.getTelephoneRec().isBlank()) {
+                    updatedRecruteur.setTelephoneRec(recruteurModel.getTelephoneRec());
+                }
+
+                if (recruteurModel.getDateRec() != null ){
+                    updatedRecruteur.setDateRec(recruteurModel.getDateRec());
+                }
+
+                updatedRecruteur.setPhotoRec(recruteurModel.getPhotoRec());
+                return recruteurRepo.save(updatedRecruteur);
+
+        } catch (Exception e) {
+            log.error("Impossible de mettre a jour le recruteur : {}", e.getMessage());
+            throw new RuntimeException("Impossible de mettre a jour le recruteur.");
+        }
+    }
+
     public void deleteRecruteur(Integer id) {
         if (!recruteurRepo.existsById(id)) {
             throw new RuntimeException("Recruteur inexistant avec l'ID : " + id);

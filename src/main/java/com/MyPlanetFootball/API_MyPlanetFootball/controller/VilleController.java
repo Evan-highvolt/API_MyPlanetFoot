@@ -27,12 +27,14 @@ public class VilleController {
      * @return the ville
      */
     @GetMapping()
-    public Iterable<VilleModel> getVille() {
+    public ResponseEntity<?> getVilles() {
         try {
-            return villeService.GetAllVilles();
+            Iterable<VilleModel> villes = villeService.GetAllVilles();
+            return ResponseEntity.ok(villes);
         } catch (Exception e) {
             log.error("Erreur lors de la recherche des ville : {}", e.getMessage());
-            throw new RuntimeException("Impossible d'afficher les villes");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Impossible d'afficher les villes");
         }
     }
 
