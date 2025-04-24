@@ -100,9 +100,6 @@ public class AdminService {
                 updatedAdmin.setPrenomAdm(adminModel.getPrenomAdm());
             }
 
-            if (adminModel.getEmailAdm() != null && !adminModel.getEmailAdm().isBlank()) {
-                updatedAdmin.setEmailAdm(adminModel.getEmailAdm());
-            }
 
             if (adminModel.getTelephoneAdm() != null && !adminModel.getTelephoneAdm().isBlank()) {
                 updatedAdmin.setTelephoneAdm(adminModel.getTelephoneAdm());

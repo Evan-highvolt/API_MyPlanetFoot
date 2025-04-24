@@ -2,6 +2,7 @@ package com.MyPlanetFootball.API_MyPlanetFootball.controller;
 
 import com.MyPlanetFootball.API_MyPlanetFootball.model.JoueurModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.JoueurService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,30 @@ public class JoueurController {
             log.error("Erreur lors de la récupération du joueur avec l'id {} : {}:", id, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erreur lors de la recherche du joueur avec l'id : " + id);
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> createJoueur(@RequestBody @Valid JoueurModel joueurModel) {
+        try {
+            JoueurModel newJoueur = joueurService.createJoueur(joueurModel);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Joueur créée avec succès : " + newJoueur.getEmailJou());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur lors de la creation du joueur : " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<?> updateJoueur(@PathVariable String email, @RequestBody @Valid JoueurModel joueurModel) {
+        try {
+            JoueurModel joueurToUpdate = joueurService.updateJoueur(joueurModel, email);
+            return ResponseEntity.ok(joueurToUpdate);
+        } catch (Exception e) {
+            log.error("Erreur lors de la modification du joueur : {} {}",email, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur lors de la modification du joueur avec l’email " + email + " : " + e.getMessage());
         }
     }
 

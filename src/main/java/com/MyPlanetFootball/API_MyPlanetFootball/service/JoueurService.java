@@ -1,6 +1,8 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.service;
 
+import com.MyPlanetFootball.API_MyPlanetFootball.model.CompteModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.model.JoueurModel;
+import com.MyPlanetFootball.API_MyPlanetFootball.repo.CompteRepo;
 import com.MyPlanetFootball.API_MyPlanetFootball.repo.JoueurRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import java.util.Optional;
 public class JoueurService {
     @Autowired
     private JoueurRepo joueurRepo;
+
+    @Autowired
+    private CompteRepo compteRepo;
 
     public Iterable<JoueurModel> getJoueurs() {
         try {
@@ -32,8 +37,58 @@ public class JoueurService {
         }
     }
 
+    public JoueurModel createJoueur(JoueurModel joueurModel) {
+        try {
+            Optional<JoueurModel> existJoueur = joueurRepo.emailJou(joueurModel.getEmailJou());
+            if (existJoueur.isPresent()) {
+                throw new RuntimeException("Un joueur existe déjà avec cet email : " + joueurModel.getEmailJou());
+            }
+            if (joueurModel.getCompteModel() == null || joueurModel.getCompteModel().getIdCpt() == null) {
+                throw new RuntimeException("L'ID du compte est requis pour créer un joueur.");
+            }
+            Integer compteId = joueurModel.getCompteModel().getIdCpt();
+            CompteModel compte = compteRepo.findById(compteId)
+                    .orElseThrow(() -> new RuntimeException("Compte inexistant avec l'id: " + compteId));
+
+            joueurModel.setCompteModel(compte);
+            return joueurRepo.save(joueurModel);
+        } catch (Exception e) {
+            log.error("Erreur lors de la création de le joueur : {}", e.getMessage(), e);
+            throw new RuntimeException("Erreur lors de la création du joueur : " + e.getMessage());
+        }
+    }
 
 
+    public JoueurModel updateJoueur(JoueurModel joueurModel, String emailJoueur) {
+        try {
+            JoueurModel updateJoueur = joueurRepo.emailJou(emailJoueur)
+                    .orElseThrow(() -> new RuntimeException("Joueur introuvable avec le mail : " + emailJoueur));
+
+            if (joueurModel.getNomJou() != null && !joueurModel.getNomJou().isBlank()) {
+                updateJoueur.setNomJou(joueurModel.getNomJou());
+            }
+
+            if (joueurModel.getPrenomJou() != null && !joueurModel.getPrenomJou().isBlank()) {
+                updateJoueur.setPrenomJou(joueurModel.getPrenomJou());
+            }
+
+            if (joueurModel.getTelephoneJou() != null && !joueurModel.getTelephoneJou().isBlank()) {
+                updateJoueur.setTelephoneJou(joueurModel.getTelephoneJou());
+            }
+
+            if (joueurModel.getDateJou() != null) {
+                updateJoueur.setDateJou(joueurModel.getDateJou());
+            }
+
+            log.info("Joueur mis à jour avec succès");
+
+            return joueurRepo.save(updateJoueur);
+
+        } catch (Exception e) {
+            log.error("Impossible de mettre à jour le joueur : {}", e.getMessage());
+            throw new RuntimeException("Impossible de mettre à jour le joueur.");
+        }
+    }
 
 
 
