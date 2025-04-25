@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -16,6 +17,7 @@ import java.util.Optional;
  */
 @RestController
 @Slf4j
+@Validated
 @RequestMapping("/compte")
 public class CompteController {
     @Autowired
@@ -44,7 +46,7 @@ public class CompteController {
      * @return the copmte by id
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCopmteById(@PathVariable @Valid Integer id) {
+    public ResponseEntity<?> getCopmteById(@PathVariable Integer id) {
         Optional<CompteModel> compteId = compteService.GetCompteById(id);
         if (compteId.isPresent()) {
             return ResponseEntity.ok().body(compteId.get());

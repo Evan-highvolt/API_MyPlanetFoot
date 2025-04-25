@@ -3,10 +3,12 @@ package com.MyPlanetFootball.API_MyPlanetFootball.controller;
 import com.MyPlanetFootball.API_MyPlanetFootball.model.AdresseModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.AdresseService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -16,6 +18,7 @@ import java.util.Optional;
  */
 @Slf4j
 @RestController
+@Validated
 @RequestMapping("/adresse")
 public class AdresseController {
     @Autowired
@@ -57,7 +60,7 @@ public class AdresseController {
 
     }
 
-    public ResponseEntity<AdresseModel> createAdresse(@RequestBody AdresseModel adresseModel){
+    public ResponseEntity<AdresseModel> createAdresse(@RequestBody @Valid AdresseModel adresseModel){
         return ResponseEntity.ok(adresseService.createAdresse(adresseModel));
     }
 
@@ -94,9 +97,6 @@ public class AdresseController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
-
-
 
     }
 

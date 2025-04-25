@@ -2,11 +2,13 @@ package com.MyPlanetFootball.API_MyPlanetFootball.controller;
 
 import com.MyPlanetFootball.API_MyPlanetFootball.model.FanModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.FanService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -16,6 +18,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@Validated
 @RequestMapping("fan")
 public class FanController {
 
@@ -24,7 +27,7 @@ public class FanController {
 
 
     @PostMapping("/")
-    public ResponseEntity<FanModel> createFan(@RequestBody FanModel fan) throws URISyntaxException {
+    public ResponseEntity<FanModel> createFan(@RequestBody @Valid FanModel fan) throws URISyntaxException {
         FanModel savedFan = fanService.saveFan(fan);
         return ResponseEntity.created(new URI("/fans" + savedFan.getIdFan())).body(savedFan);
     }
@@ -35,7 +38,7 @@ public class FanController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FanModel> updateFan(@PathVariable Integer id, @RequestBody FanModel fanModel) {
+    public ResponseEntity<FanModel> updateFan(@PathVariable Integer id, @RequestBody @Valid FanModel fanModel) {
         Optional<FanModel> fanModelOptional = fanService.getFanById(id);
         if (fanModelOptional.isPresent()) {
             FanModel fanModelToUpdate = fanModelOptional.get();

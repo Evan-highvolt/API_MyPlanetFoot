@@ -6,10 +6,17 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * The type Carte model.
+ */
 @Entity
 @Data
 @Table(name = "carte_joueur")
 public class CarteModel {
+    @OneToOne
+    @JoinColumn(name = "id_jou")
+    private JoueurModel joueur;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

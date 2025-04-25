@@ -7,15 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
 @Slf4j
+@Validated
+@RequestMapping("/ligue")
 public class LigueController {
     @Autowired
     private LigueService ligueService;
@@ -48,6 +48,33 @@ public class LigueController {
                     .body("Erreur interne lors de la récupération de la ligue.");
         }
     }
+
+    @PostMapping()
+    public ResponseEntity<?> createLigue(@RequestBody @Valid LigueModel ligueModel) {
+
+        try {
+            LigueModel newLigue = ligueService.createLigue(ligueModel);
+            return ResponseEntity.status(HttpStatus.CREATED).body(("Ligue créée avec succès : " + newLigue));
+        } catch (Exception e) {
+            log.error("Erreur lors de la creation de ligue : {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur lors de la creation de la ligue : " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateLigue(@PathVariable Integer id, @RequestBody @Valid LigueModel ligueModel) {
+        try {
+            LigueModel updatedLigue = ligueService.updateLigue( ligueModel, id);
+            return ResponseEntity.ok("Ligue mise à jour avec succès : " + updatedLigue.getNomLegue());
+        } catch (Exception e) {
+            log.error("Erreur lors de la mise à jour de la ligue avec id {} : {}", id, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur lors de la mise à jour de la ligue : " + e.getMessage());
+        }
+    }
+
+
 
     @DeleteMapping("/{id}")
     public  ResponseEntity<String> deleteLigueById(@PathVariable Integer id) {

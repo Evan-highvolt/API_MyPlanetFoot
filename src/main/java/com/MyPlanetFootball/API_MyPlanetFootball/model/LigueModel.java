@@ -1,6 +1,7 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -43,6 +44,7 @@ public class LigueModel {
     private String nomLegue;
 
     @NotNull
+    @Min(value = 1, message = "Le nivueau ne peut pas être négatif ou egal a zero.")
     @Column(name = "niveau_lig", nullable = false)
     private int niveauLegue;
 
