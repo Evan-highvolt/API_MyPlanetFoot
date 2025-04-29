@@ -1,5 +1,6 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -29,6 +30,7 @@ import java.time.LocalDate;
 public class PublicationModel {
     @ManyToOne
     @JoinColumn(name = "id_cpt", nullable = false)
+    @JsonBackReference
     private CompteModel compteModel;
     
     @Id
@@ -48,7 +50,7 @@ public class PublicationModel {
 
     @NotNull
     @Min(value = 0, message = "Le nombre de matchs ne peut pas être négatif.")
-    @Column(name = "nbr_commentaire_pub")
+    @Column(name = "nbr_commentair_pub")
     private int nbrCommentairePub;
 
     @Column(name = "date_pub", nullable = false)

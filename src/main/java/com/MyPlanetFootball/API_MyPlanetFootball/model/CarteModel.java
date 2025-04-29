@@ -15,7 +15,7 @@ import lombok.Data;
 public class CarteModel {
     @OneToOne
     @JoinColumn(name = "id_jou")
-    private JoueurModel joueur;
+    private JoueurModel joueurModel;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

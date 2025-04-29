@@ -1,7 +1,12 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.controller;
 
 import com.MyPlanetFootball.API_MyPlanetFootball.model.CarteModel;
+import com.MyPlanetFootball.API_MyPlanetFootball.model.JoueurModel;
+import com.MyPlanetFootball.API_MyPlanetFootball.repo.CarteRepo;
+import com.MyPlanetFootball.API_MyPlanetFootball.repo.JoueurRepo;
 import com.MyPlanetFootball.API_MyPlanetFootball.service.CarteService;
+import com.MyPlanetFootball.API_MyPlanetFootball.service.JoueurService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +23,10 @@ import java.util.Optional;
 public class CarteController {
     @Autowired
     private CarteService carteService;
+
+    @Autowired
+    private JoueurService joueurService;
+
 
     @GetMapping()
     public ResponseEntity<?> getCarte(@Validated @RequestBody CarteModel carte) {
@@ -49,6 +58,42 @@ public class CarteController {
             log.error("Erreur lors de la récupération de la carte avec l'id {} : {}", id, e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Erreur lors de la recherche de la carte avec l'id : " + id);
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<?>createCarte(@RequestBody @Valid CarteModel carteModel) {
+        try {
+
+            if (joueurService.getJoueurById(carteModel.getJoueurModel().getIdJou()).isEmpty()) {
+                throw new RuntimeException("L'ID du joueur est requis pour créer une carte.");
+            }
+
+            JoueurModel joueur = joueurService.getJoueurById(carteModel.getJoueurModel().getIdJou())
+                    .orElseThrow(() -> new RuntimeException("Joueur introuvable avec ID: " + carteModel.getJoueurModel().getIdJou()));
+
+            carteModel.setJoueurModel(joueur);
+            CarteModel newCarte = carteService.createCarte(carteModel);
+
+            return  ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Carte créée avec succès : " + newCarte);
+
+        }  catch (Exception e) {
+            log.error("Erreur lors de la création de la carte : {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur lors de la création de la carte : " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{idJoueur}")
+    public ResponseEntity<?> updateJoueur(@PathVariable Integer idJoueur, @RequestBody @Valid CarteModel carteModel) {
+        try {
+            CarteModel carteToUpdate = carteService.updateCarte(carteModel, idJoueur);
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body("Carte mise à jour avec succès : " + carteToUpdate);
+        } catch (RuntimeException rte) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Erreur : " + rte.getMessage());
         }
     }
 
