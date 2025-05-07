@@ -47,5 +47,36 @@ public class PublicationService {
 
     }
 
+    public PublicationModel createPublication(PublicationModel publication) {
+        try {
+            Optional<CompteModel> comptOpt = compteRepo.findByLoginCpt(publication.getCompteModel().getLoginCpt());
+            if (comptOpt.isEmpty()) {
+                log.warn("Tentative de création d'une publication avec un compte inexistant : {}", publication.getCompteModel().getLoginCpt());
+                throw new RuntimeException("Le compte n'existe pas.");
+            }
+            CompteModel compte = comptOpt.get();
+            publication.setCompteModel(compte);
+            log.info("Publication créée avec succès");
+            return pubRepo.save(publication);
+        } catch (Exception e) {
+            log.error("Erreur lors de la création de la publication : {}", e.getMessage(), e);
+            throw new RuntimeException("Impossible de créer la publication.", e);
+        }
+    }
+
+    public void deletePublication(Integer id) {
+        if (!pubRepo.existsById(id)) {
+            throw new RuntimeException("Publication inexistant avec l'ID : " + id);
+        }
+        try {
+            log.info("Le publication pour le compte : {}", id);
+            pubRepo.deleteById(id);
+        } catch (Exception e) {
+            log.error("Impossible de supprimer la publication avec l'id : {}", id, e);
+            throw new RuntimeException("Impossible de supprimer la publication : " + id + " : " + e.getMessage(), e);
+        }
+
+    }
+
 
 }
