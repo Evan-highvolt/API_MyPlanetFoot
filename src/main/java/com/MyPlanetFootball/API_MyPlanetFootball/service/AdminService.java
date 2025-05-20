@@ -66,12 +66,12 @@ public class AdminService {
                 throw new RuntimeException("Un administrateur existe déjà avec cet email : " + adminModel.getEmailAdm());
             }
 
-            Integer compteId = adminModel.getCompteModel().getIdCpt();
-            CompteModel compte = compteRepo.findById(compteId)
-                    .orElseThrow(() -> new RuntimeException("Compte inexistant avec l'id: " + compteId));
+//            Integer compteId = adminModel.getCompteModel().getIdCpt();
+//            CompteModel compte = compteRepo.findById(compteId)
+//                    .orElseThrow(() -> new RuntimeException("Compte inexistant avec l'id: " + compteId));
+            CompteModel savedCompte = compteRepo.save(adminModel.getCompteModel());
 
-
-            adminModel.setCompteModel(compte);
+            adminModel.setCompteModel(savedCompte);
             return adminRepo.save(adminModel);
         } catch (Exception e) {
             log.error("Erreur lors de la création de l'admin : {}", e.getMessage(), e);

@@ -70,7 +70,7 @@ public class AdminController {
         try {
             AdminModel newAdmin = adminService.createAdmin(adminModel);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Admin créée avec succès : " + newAdmin.getEmailAdm());
+                    .body(newAdmin);
         }catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Erreur lors de la creation d'admin : " + e.getMessage());
