@@ -6,6 +6,7 @@ import com.MyPlanetFootball.API_MyPlanetFootball.repo.AdminRepo;
 import com.MyPlanetFootball.API_MyPlanetFootball.repo.CompteRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +23,8 @@ public class AdminService {
     private AdminRepo adminRepo;
     @Autowired
     private CompteRepo compteRepo;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * Gets all admins.
@@ -66,13 +69,15 @@ public class AdminService {
                 throw new RuntimeException("Un administrateur existe déjà avec cet email : " + adminModel.getEmailAdm());
             }
 
-//            Integer compteId = adminModel.getCompteModel().getIdCpt();
-//            CompteModel compte = compteRepo.findById(compteId)
-//                    .orElseThrow(() -> new RuntimeException("Compte inexistant avec l'id: " + compteId));
-            CompteModel savedCompte = compteRepo.save(adminModel.getCompteModel());
+            String rawPassword = adminModel.getCompteModel().getMdpCpt();
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            adminModel.getCompteModel().setMdpCpt(encodedPassword);
 
+            CompteModel savedCompte = compteRepo.save(adminModel.getCompteModel());
             adminModel.setCompteModel(savedCompte);
+
             return adminRepo.save(adminModel);
+
         } catch (Exception e) {
             log.error("Erreur lors de la création de l'admin : {}", e.getMessage(), e);
             throw new RuntimeException("Impossible de créer l'administrateur");
