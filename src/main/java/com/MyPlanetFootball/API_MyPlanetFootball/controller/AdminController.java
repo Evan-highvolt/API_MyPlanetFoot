@@ -85,13 +85,25 @@ public class AdminController {
      * @param email the email
      * @return the response entity
      */
-    @PutMapping("/{email}")
-    public ResponseEntity<?>updateAdmin(@RequestBody @Valid AdminModel admin, @PathVariable String email) {
+//    @PutMapping("/{email}")
+//    public ResponseEntity<?>updateAdmin(@RequestBody @Valid AdminModel admin, @PathVariable String email) {
+//        try {
+//            AdminModel updatedAdmin = adminService.updateAdmin(email, admin);
+//            return ResponseEntity.ok(updatedAdmin);
+//        } catch (Exception e) {
+//            log.error("Erreur lors de la modification d'admin : {}", e.getMessage());
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                    .body("Erreur lors de la modification d'admin : " + e.getMessage());
+//        }
+//    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?>updateAdmin(@RequestBody @Valid AdminModel admin, @PathVariable Integer id) {
         try {
-            AdminModel updatedAdmin = adminService.updateAdmin(email, admin);
+            AdminModel updatedAdmin = adminService.updateAdmin(id, admin);
             return ResponseEntity.ok(updatedAdmin);
         } catch (Exception e) {
-            log.error("Erreur lors de la modification d'admin : {}", e.getMessage());
+            log.error("Erreur lors de la modification d'admin avec l'ID: {} {}", id , e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Erreur lors de la modification d'admin : " + e.getMessage());
         }

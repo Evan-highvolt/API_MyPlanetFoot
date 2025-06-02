@@ -84,17 +84,56 @@ public class AdminService {
         }
     }
 
-    /**
-     * Update admin admin model.
-     *
-     * @param email      the email
-     * @param adminModel the admin model
-     * @return the admin model
-     */
-    public AdminModel updateAdmin (String email, AdminModel adminModel) {
+//    /**
+//     * Update admin admin model.
+//     *
+//     * @param email      the email
+//     * @param adminModel the admin model
+//     * @return the admin model
+//     */
+//    public AdminModel updateAdmin (String email, AdminModel adminModel) {
+//        try {
+//            AdminModel updatedAdmin = adminRepo.emailAdm(email)
+//                    .orElseThrow(() -> new RuntimeException("Admin introuvable avec l'id: " + email));
+//
+//
+//            if (adminModel.getNomAdm() != null && !adminModel.getNomAdm().isBlank()) {
+//                updatedAdmin.setNomAdm(adminModel.getNomAdm());
+//            }
+//
+//            if (adminModel.getPrenomAdm() != null && !adminModel.getPrenomAdm().isBlank()) {
+//                updatedAdmin.setPrenomAdm(adminModel.getPrenomAdm());
+//            }
+//
+//
+//            if (adminModel.getTelephoneAdm() != null && !adminModel.getTelephoneAdm().isBlank()) {
+//                updatedAdmin.setTelephoneAdm(adminModel.getTelephoneAdm());
+//            }
+//
+//            if (adminModel.getPhotoPrflAdm() != null) {
+//                updatedAdmin.setPhotoPrflAdm(adminModel.getPhotoPrflAdm());
+//            }
+//
+//            if (adminModel.getRespoAdm() != null) {
+//                updatedAdmin.setRespoAdm(adminModel.getRespoAdm());
+//            }
+//
+//            if (adminModel.getDateAdm() != null) {
+//                updatedAdmin.setDateAdm(adminModel.getDateAdm());
+//            }
+//
+//
+//            return adminRepo.save(updatedAdmin);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("");
+//        }
+//    }
+
+    public AdminModel updateAdmin (Integer id, AdminModel adminModel) {
         try {
-            AdminModel updatedAdmin = adminRepo.emailAdm(email)
-                    .orElseThrow(() -> new RuntimeException("Admin introuvable avec l'id: " + email));
+            AdminModel updatedAdmin = adminRepo.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Admin introuvable avec l'id: " + id));
 
 
             if (adminModel.getNomAdm() != null && !adminModel.getNomAdm().isBlank()) {
