@@ -1,15 +1,20 @@
 package com.MyPlanetFootball.API_MyPlanetFootball.service;
 
+
 import com.MyPlanetFootball.API_MyPlanetFootball.model.AdminModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.model.CompteModel;
+import com.MyPlanetFootball.API_MyPlanetFootball.model.ComptePrincipal;
 import com.MyPlanetFootball.API_MyPlanetFootball.repo.AdminRepo;
 import com.MyPlanetFootball.API_MyPlanetFootball.repo.CompteRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
+import java.nio.file.attribute.UserPrincipal;
 import java.util.Optional;
 
 /**
@@ -39,6 +44,17 @@ public class AdminService {
             throw new RuntimeException("Impossible de récupérer les admins");
         }
     }
+
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<AdminModel> adminModel = adminRepo.emailAdm(email);
+        if (adminModel.isEmpty()) {
+            log.error("L'admin n'est pas trouve");
+            throw new UsernameNotFoundException(email);
+        }
+        return new ComptePrincipal();
+    }
+
+
 
     /**
      * Gets admin by id.

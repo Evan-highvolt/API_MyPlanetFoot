@@ -4,6 +4,9 @@ import com.MyPlanetFootball.API_MyPlanetFootball.model.CompteModel;
 import com.MyPlanetFootball.API_MyPlanetFootball.repo.CompteRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,6 +17,12 @@ public class CompteService {
 
     @Autowired
     private CompteRepo compteRepo;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    JWTService jwtService;
 
 
     public Iterable<CompteModel> GetAllComptes() {
@@ -121,6 +130,8 @@ public class CompteService {
             throw new RuntimeException("Impossible de supprimer le compte avec l'id :" + id);
         }
     }
+
+
 
 
 
