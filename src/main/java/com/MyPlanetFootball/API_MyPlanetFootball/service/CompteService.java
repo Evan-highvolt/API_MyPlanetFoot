@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -17,12 +18,8 @@ public class CompteService {
 
     @Autowired
     private CompteRepo compteRepo;
-
     @Autowired
-    AuthenticationManager authenticationManager;
-
-    @Autowired
-    JWTService jwtService;
+    private PasswordEncoder passwordEncoder;
 
 
     public Iterable<CompteModel> GetAllComptes() {
@@ -68,6 +65,9 @@ public class CompteService {
                 throw new RuntimeException("Le mdp est obligatoire");
             }
 
+            String rawPassword = compte.getMdpCpt();
+            String encodedPassword = passwordEncoder.encode(rawPassword);
+            compte.setMdpCpt(encodedPassword);
 
             return compteRepo.save(compte);
         } catch (Exception e) {

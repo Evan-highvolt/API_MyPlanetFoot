@@ -17,16 +17,12 @@ public class AdminModel {
     @JoinColumn(name = "id_cpt", nullable = false)
     private CompteModel compteModel;
 
-//    @ManyToOne
-//    @JoinColumn(name = "id_adr", nullable = false)
-//    private AdresseModel adresseModel;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     @Column(name = "id_adm")
     private Integer idAdm;
-
 
     @Column(name = "prenom_adm", nullable = false, length = 50)
     @NotBlank(message = "Le prenom ne doit pas être vide.")

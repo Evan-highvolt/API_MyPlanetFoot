@@ -24,12 +24,8 @@ public class JWTFilter extends OncePerRequestFilter {
     @Autowired
     private JWTService jwtService;
 
-    @Autowired
-    ApplicationContext context;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//  Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJraWxsIiwiaWF0IjoxNzIzMTgzNzExLCJleHAiOjE3MjMxODM4MTl9.5nf7dRzKRiuGurN2B9dHh_M5xiu73ZzWPr6rbhOTTHs
         String token = null;
 
         // 1. Essayer de lire le header Authorization
@@ -44,10 +40,7 @@ public class JWTFilter extends OncePerRequestFilter {
                 if ("jwt".equals(cookie.getName())) {
                     token = cookie.getValue();
                     break;
-                }
-            }
-        }
-
+                }}}
         // 3. Authentifier si token trouvé
         if (token != null) {
             try {
@@ -56,10 +49,8 @@ public class JWTFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                return;
-            }
+                return;}
         }
-
         filterChain.doFilter(request, response);
 }
 }
