@@ -21,9 +21,11 @@ import java.util.List;
 
 @Component
 public class JWTFilter extends OncePerRequestFilter {
-    @Autowired
+//    @Autowired
     private JWTService jwtService;
-
+    public JWTFilter(JWTService jwtService) {
+        this.jwtService = jwtService;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = null;
