@@ -67,7 +67,7 @@ class CompteTest {
         assertEquals("evan", result.get().getLoginCpt());
     }
 
-    
+
     @Test
     void testDeleteCompte() {
         when(compteRepo.existsById(1)).thenReturn(true);
