@@ -28,7 +28,6 @@ public class CompteControllerTest {
         CompteService list = (CompteService) compteService.GetAllComptes();
 
         List<CompteService> allComptes = Arrays.asList(list);
-        given()
 
         mockMvc.perform(get("/compte")).andExpect(status().isOk());
     }
