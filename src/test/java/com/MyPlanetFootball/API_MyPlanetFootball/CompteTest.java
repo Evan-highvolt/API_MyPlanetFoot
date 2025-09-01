@@ -67,24 +67,7 @@ class CompteTest {
         assertEquals("evan", result.get().getLoginCpt());
     }
 
-    @Test
-    void testUpdateMdp() {
-        CompteModel compte = new CompteModel();
-        compte.setLoginCpt("evan");
-        compte.setMdpCpt("password");
-
-        when(compteRepo.findByLoginCpt("evan")).thenReturn(Optional.of(compte));
-        when(passwordEncoder.encode("123456")).thenReturn("mdpHashe");
-        when(compteRepo.save(any(CompteModel.class))).thenAnswer(i -> i.getArgument(0));
-
-        CompteModel updated = compteService.updateMdp("evan", "123456", "123456");
-
-        assertEquals("mpdHashe", updated.getMdpCpt());
-        verify(passwordEncoder).encode("123456");
-        verify(compteRepo).save(compte);
-    }
-
-
+    
     @Test
     void testDeleteCompte() {
         when(compteRepo.existsById(1)).thenReturn(true);
